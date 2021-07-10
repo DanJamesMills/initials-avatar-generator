@@ -133,7 +133,7 @@ class InitialsAvatarGenerator
 
     protected function getAvatarFilename(): string
     {
-        return sha1($this->name . time()). '.' . $this->$fileFormat;
+        return sha1($this->name . time()). '.' . $this->fileFormat;
     }
 
     private function getAvatarFromApi(): void
