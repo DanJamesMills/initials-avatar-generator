@@ -1,6 +1,6 @@
 <?php
 
-namespace Danjamesmills\InitialsAvatarGenerator;
+namespace DanJamesMills\InitialsAvatarGenerator;
 
 use Illuminate\Support\ServiceProvider;
 
