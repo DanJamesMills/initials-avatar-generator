@@ -2,6 +2,8 @@
 
 namespace DanJamesMills\InitialsAvatarGenerator\Traits;
 
+use DanJamesMills\InitialsAvatarGenerator\InitialsAvatarGenerator;
+
 trait HasAvatar
 {
     /* Map default colums */
