@@ -9,7 +9,7 @@ trait HasAvatar
         if (!app()->runningInConsole()) {
             static::creating(function ($model) {
                 $model->{$model->getAvatarField()} = \InitialsAvatarGenerator::name(
-                    $model->defineNameInitialsAvatarGenerator()
+                    $model->getNameInitialsField()
                 )->generate();
             });
         }
@@ -18,7 +18,7 @@ trait HasAvatar
             static::updating(function ($model) {
                 if (strpos($model->{$model->getAvatarField()}, 'IAG') !== false) {
                     $model->{$model->getAvatarField()} = \InitialsAvatarGenerator::name(
-                        $model->defineNameInitialsAvatarGenerator()
+                        $model->getNameInitialsField()
                     )->generate();
                 }
             });
@@ -29,6 +29,15 @@ trait HasAvatar
     {
         if (method_exists($this, 'defineAvatarColumnName')) {
             return $this->defineAvatarColumnName();
+        }
+
+        return 'avatar';
+    }
+
+    protected function getNameInitialsField()
+    {
+        if (method_exists($this, 'defineNameInitialsAvatarGenerator')) {
+            return $this->defineNameInitialsAvatarGenerator();
         }
 
         return 'avatar';
