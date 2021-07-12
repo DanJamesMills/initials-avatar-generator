@@ -151,11 +151,12 @@ class InitialsAvatarGenerator
     }
 
     /**
-     * Undocumented function
+     * Save avatar file
+     * to disk.
      *
-     * @return string
+     * @return void
      */
-    private function saveAvatarFileToDisk(): string
+    private function saveAvatarFileToDisk(): void
     {
         $this->generatedFilename = $this->generateRandomFilename();
 
