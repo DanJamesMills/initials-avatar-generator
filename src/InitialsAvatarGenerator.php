@@ -105,6 +105,14 @@ class InitialsAvatarGenerator
     private $initials;
 
     /**
+     * A generated file name used
+     * for saving avatar file.
+     *
+     * @var string
+     */
+    private $generatedFilename;
+
+    /**
      * Returns a url to api endpoint
      * with populated parameters.
      *
@@ -149,11 +157,9 @@ class InitialsAvatarGenerator
      */
     private function saveAvatarFileToDisk(): string
     {
-        $filename = $this->getAvatarFilename();
+        $this->generatedFilename = $this->generateRandomFilename();
 
-        file_put_contents($this->avatarSavePath().$filename, $this->avatarFileString);
-
-        return $filename;
+        file_put_contents($this->avatarSavePath().$this->generatedFilename, $this->avatarFileString);
     }
 
     /**
@@ -161,9 +167,9 @@ class InitialsAvatarGenerator
      *
      * @return string
      */
-    protected function getAvatarFilename(): string
+    protected function generateRandomFilename(): string
     {
-        return sha1($this->name . time()). '.' . $this->fileFormat;
+        return 'IAG' . sha1($this->name . time()). '.' . $this->fileFormat;
     }
 
     /**
@@ -309,6 +315,11 @@ class InitialsAvatarGenerator
         $this->rounded = false;
     }
 
+    public function getGeneratedFilename(): string
+    {
+        return $this->generatedFilename;
+    }
+
     public function generate()
     {
         $this->makeInitials();
@@ -318,5 +329,7 @@ class InitialsAvatarGenerator
         $this->saveAvatarFileToDisk();
 
         $this->resetClassOptionsBackToDefault();
+
+        return $this->getGeneratedFilename();
     }
 }
