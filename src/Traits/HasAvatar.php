@@ -2,8 +2,6 @@
 
 namespace DanJamesMills\InitialsAvatarGenerator\Traits;
 
-use DanJamesMills\InitialsAvatarGenerator\InitialsAvatarGenerator;
-
 trait HasAvatar
 {
     /* Map default colums */
@@ -13,7 +11,7 @@ trait HasAvatar
     {
         if (!app()->runningInConsole()) {
             static::creating(function ($model) {
-                InitialsAvatarGenerator::name('Danny Mills')
+                \InitialsAvatarGenerator::name('Danny Mills')
                     ->rounded()
                     ->generate();
                 
