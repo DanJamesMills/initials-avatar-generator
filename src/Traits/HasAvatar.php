@@ -5,17 +5,21 @@ namespace DanJamesMills\InitialsAvatarGenerator\Traits;
 trait HasAvatar
 {
     /* Map default colums */
-    protected static $userIdField = 'user_id';
+    protected static $avatarField = 'avatar';
 
     protected static function bootHasAvatar()
     {
         if (!app()->runningInConsole()) {
             static::creating(function ($model) {
-                \InitialsAvatarGenerator::name('Danny Mills')
-                    ->rounded()
+                $model->{static::$avatarField} = \InitialsAvatarGenerator::name($model->name)
                     ->generate();
-                
-                // $model->{static::$userIdField} = Auth::User()->id;
+            });
+        }
+
+        if (!app()->runningInConsole()) {
+            static::updating(function ($model) {
+                $model->{static::$avatarField} = \InitialsAvatarGenerator::name($model->name)
+                    ->generate();
             });
         }
     }

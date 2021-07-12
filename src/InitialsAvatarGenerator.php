@@ -88,9 +88,29 @@ class InitialsAvatarGenerator
      */
     private $avatarFileString;
 
+    /**
+     * File path of where to save
+     * avatar file to.
+     *
+     * @var string
+     */
+    private $avatarSavePath;
+
+    /**
+     * Initials made from
+     * name passed.
+     *
+     * @var string
+     */
     private $initials;
 
-    private function getAvatarGeneratorUrl()
+    /**
+     * Returns a url to api endpoint
+     * with populated parameters.
+     *
+     * @return string
+     */
+    private function getAvatarGeneratorUrl(): string
     {
         $parameters = [
             'name' => $this->initials,
@@ -106,7 +126,7 @@ class InitialsAvatarGenerator
         return $this->apiBaseUrl . '?' . http_build_query($parameters);
     }
 
-    protected function avatarSaveLocation(): string
+    protected function avatarSavePath(): string
     {
         return storage_path('app/public/avatars/');
     }
@@ -122,20 +142,36 @@ class InitialsAvatarGenerator
         return $this->colourRange[array_rand($this->colourRange)];
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
     private function saveAvatarFileToDisk(): string
     {
         $filename = $this->getAvatarFilename();
 
-        file_put_contents($this->avatarSaveLocation().$filename, $this->avatarFileString);
+        file_put_contents($this->avatarSavePath().$filename, $this->avatarFileString);
 
         return $filename;
     }
 
+    /**
+     * Generates a random file name.
+     *
+     * @return string
+     */
     protected function getAvatarFilename(): string
     {
         return sha1($this->name . time()). '.' . $this->fileFormat;
     }
 
+    /**
+     * Fletches avatar file from
+     * api endpoint.
+     *
+     * @return void
+     */
     private function getAvatarFromApi(): void
     {
         $this->avatarFileString = file_get_contents($this->getAvatarGeneratorUrl());
@@ -249,7 +285,7 @@ class InitialsAvatarGenerator
     public function fileFormat(string $fileFormat): self
     {
         if (!in_array($fileFormat, $this->getSupportedFileFormats())) {
-            throw new Exception("File format not supported, accepted file formats are 'png' or 'svg'");
+            throw new \Exception("File format not supported, accepted file formats are 'png' or 'svg'");
         }
         
         $this->fileFormat = $fileFormat;

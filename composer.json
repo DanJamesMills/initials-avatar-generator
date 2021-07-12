@@ -25,7 +25,8 @@
     },
     "autoload": {
         "psr-4": {
-            "DanJamesMills\\InitialsAvatarGenerator\\": "src"
+            "DanJamesMills\\InitialsAvatarGenerator\\": "src",
+            "DanJamesMills\\InitialsAvatarGenerator\\Database\\": "database"
         }
     },
     "autoload-dev": {
