@@ -28,7 +28,6 @@ trait HasAvatar
     protected function getAvatarField()
     {
         if (method_exists($this, 'defineAvatarColumnName')) {
-            dd('yup');
             return $this->defineAvatarColumnName();
         }
 
