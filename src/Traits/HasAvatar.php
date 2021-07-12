@@ -11,15 +11,18 @@ trait HasAvatar
     {
         if (!app()->runningInConsole()) {
             static::creating(function ($model) {
-                dd($model->defineNameInitialsAvatarGenerator());
-                $model->{static::$avatarField} = \InitialsAvatarGenerator::name($model->name)
+                $model->{static::$avatarField} = \InitialsAvatarGenerator::name(
+                    $model->defineNameInitialsAvatarGenerator()
+                )
                     ->generate();
             });
         }
 
         if (!app()->runningInConsole()) {
             static::updating(function ($model) {
-                $model->{static::$avatarField} = \InitialsAvatarGenerator::name($model->name)
+                $model->{static::$avatarField} = \InitialsAvatarGenerator::name(
+                    $model->defineNameInitialsAvatarGenerator()
+                )
                     ->generate();
             });
         }
