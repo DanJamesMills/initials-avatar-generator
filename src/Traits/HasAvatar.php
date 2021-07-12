@@ -11,6 +11,7 @@ trait HasAvatar
     {
         if (!app()->runningInConsole()) {
             static::creating(function ($model) {
+                dd($model->defineNameInitialsAvatarGenerator());
                 $model->{static::$avatarField} = \InitialsAvatarGenerator::name($model->name)
                     ->generate();
             });
