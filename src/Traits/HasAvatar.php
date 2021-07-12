@@ -31,7 +31,7 @@ trait HasAvatar
             return $this->defineAvatarColumnName();
         }
 
-        return 'avatar';
+        return $this->name;
     }
 
     protected function getNameInitialsField()
