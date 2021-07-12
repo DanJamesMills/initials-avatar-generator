@@ -20,10 +20,12 @@ trait HasAvatar
 
         if (!app()->runningInConsole()) {
             static::updating(function ($model) {
-                $model->{static::$avatarField} = \InitialsAvatarGenerator::name(
-                    $model->defineNameInitialsAvatarGenerator()
-                )
-                    ->generate();
+                if (strpos($model->avatar, 'IAG') !== false) {
+                    $model->{static::$avatarField} = \InitialsAvatarGenerator::name(
+                        $model->defineNameInitialsAvatarGenerator()
+                    )
+                        ->generate();
+                }
             });
         }
     }
