@@ -102,5 +102,18 @@ return [
     */
     'rounded' => false,
 
+    'models' => [
 
+        /*
+         * When using the "HasNote" trait from this package, we need to know which
+         * Eloquent model should be used to retrieve your notes. Of course, it
+         * is often just the "Note" model but you may use whatever you like.
+         *
+         * The model you want to use as a "Note" model needs to extend the
+         * `DanJamesMills\Notes\Models\Note` model.
+         */
+
+        'user' => App\Models\User::class,
+
+    ],
 ];
