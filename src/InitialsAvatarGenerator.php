@@ -16,28 +16,28 @@ class InitialsAvatarGenerator
      *
      * @var int
      */
-    private $size = 500;
+    private $size;
 
     /**
      * Font colour of avatar initials.
      *
      * @var string
      */
-    private $fontColour = 'ffffff';
+    private $fontColour;
 
     /**
      * If initials should be uppercase.
      *
      * @var boolean
      */
-    private $uppercase = true;
+    private $uppercase;
 
     /**
      * If initials should be bold.
      *
      * @var boolean
      */
-    private $bold = false;
+    private $bold;
 
     /**
      * Background colour ranges that
@@ -45,18 +45,7 @@ class InitialsAvatarGenerator
      *
      * @var array
      */
-    private $colourRange = [
-        'ff5622',
-        '8057ff',
-        '4d88ff',
-        'ff4169',
-        '673ab7',
-        '03a9f4',
-        '26c5da',
-        '00ac7c',
-        'c0ca33',
-        'ffb201',
-    ];
+    private $colourRange;
 
     /**
      * Decide if the API should
@@ -64,7 +53,7 @@ class InitialsAvatarGenerator
      *
      * @var string
      */
-    private $fileFormat = 'png';
+    private $fileFormat;
 
     /**
      * Boolean specifying if the
@@ -72,7 +61,7 @@ class InitialsAvatarGenerator
      *
      * @var bool
      */
-    private $rounded = false;
+    private $rounded;
 
     /**
      * Name used for generating initials.
@@ -111,6 +100,21 @@ class InitialsAvatarGenerator
      * @var string
      */
     private $generatedFilename;
+
+    public function __construct()
+    {
+        $this->size(Config::get('initials-avatar-generator.size'));
+
+        $this->fontColour = Config::get('initials-avatar-generator.size');
+
+        $this->uppercase(Config::get('initials-avatar-generator.uppercase'));
+
+        $this->bold = Config::get('initials-avatar-generator.size');
+
+        $this->fileFormat(Config::get('initials-avatar-generator.file_format'));
+
+        $this->rounded(Config::get('initials-avatar-generator.rounded'));
+    }
 
     /**
      * Returns a url to api endpoint
