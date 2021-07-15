@@ -1,6 +1,6 @@
 <?php
 
-namespace DanJamesMills\InitialsAvatarGenerator\Api;
+namespace DanJamesMills\InitialsAvatarGenerator\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use DanJamesMills\InitialsAvatarGenerator\AvatarUploader;
