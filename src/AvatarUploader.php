@@ -2,12 +2,12 @@
 
 namespace DanJamesMills\InitialsAvatarGenerator;
 
-use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 
 class AvatarUploader
 {
     /**
-     * @var \Illuminate\Http\Request;
+     * @var \Illuminate\Http\UploadedFile;
      */
     private $file;
 
@@ -55,7 +55,7 @@ class AvatarUploader
         return $this->generatedFilename;
     }
     
-    public function handle(Request $file): string
+    public function handle(UploadedFile $file): string
     {
         $this->file = $file;
         
