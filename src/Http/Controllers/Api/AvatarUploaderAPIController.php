@@ -21,7 +21,7 @@ class AvatarUploaderAPIController extends AppBaseController
     {
         $avatarUploader = new AvatarUploader();
 
-        $avatarUploader->handle($request->file);
+        return $avatarUploader->handle($request->file);
 
         // $request->user()
         //     ->fill(['avatar' => $newFileName])

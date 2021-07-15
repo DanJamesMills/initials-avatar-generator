@@ -47,11 +47,18 @@ class AvatarUploader
     {
         return sha1($this->file->getClientOriginalName() . time()). '.' . $this->file->getClientOriginalExtension();
     }
+
+    public function getGeneratedFilename(): string
+    {
+        return $this->generatedFilename;
+    }
     
-    public function handle()
+    public function handle(): string
     {
         $this->saveFile();
 
         $this->resizeImage();
+
+        return $this->getGeneratedFilename();
     }
 }
