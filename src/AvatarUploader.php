@@ -55,7 +55,7 @@ class AvatarUploader
     
     public function handle(): string
     {
-        $this->saveFile();
+        $this->saveAvatarFileToDisk();
 
         $this->resizeImage();
 
