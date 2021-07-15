@@ -2,6 +2,8 @@
 
 namespace DanJamesMills\InitialsAvatarGenerator;
 
+use Illuminate\Http\Request;
+
 class AvatarUploader
 {
     /**
@@ -53,8 +55,10 @@ class AvatarUploader
         return $this->generatedFilename;
     }
     
-    public function handle(): string
+    public function handle(Request $file): string
     {
+        $this->file = $file;
+        
         $this->saveAvatarFileToDisk();
 
         $this->resizeImage();
