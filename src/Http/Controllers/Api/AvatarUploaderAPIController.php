@@ -21,6 +21,8 @@ class AvatarUploaderAPIController extends AppBaseController
     {
         $avatarUploader = new AvatarUploader();
 
+        $this->getModelClass($request->model);
+
         return $avatarUploader->handle($request->file);
 
         // $request->user()
@@ -28,5 +30,13 @@ class AvatarUploaderAPIController extends AppBaseController
         //     ->save();
 
         return $this->sendResponse(['file' => $request->user()->avatar], 'Avatar has been uploaded and saved. successfully');
+    }
+
+    private function getModelClass($model)
+    {
+        if (config()->has('initials-avatar-generator.models.' . $model)) {
+            dd('ye');
+            // $record = ('App\\Models\\'.ucfirst($model))::findOrFail($id);
+        }
     }
 }
