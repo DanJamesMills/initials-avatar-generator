@@ -29,13 +29,13 @@ class AvatarUploader
     {
         $this->generatedFilename = $this->generateRandomFilename();
 
-        $this->file->move(public_path('avatars'), $this->generatedFilename);
+        $this->file->move(storage_path('app/public/avatars'), $this->generatedFilename);
     }
 
 
     private function resizeImage()
     {
-        \Image::make(public_path('avatars/' . $this->generatedFilename))
+        \Image::make(storage_path('app/public/avatars/' . $this->generatedFilename))
             ->resize(800, 800)
             ->save();
     }

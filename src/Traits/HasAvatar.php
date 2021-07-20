@@ -25,7 +25,7 @@ trait HasAvatar
         }
     }
 
-    protected function getAvatarField()
+    public function getAvatarField()
     {
         if (method_exists($this, 'defineAvatarColumnName')) {
             return $this->defineAvatarColumnName();
@@ -34,7 +34,7 @@ trait HasAvatar
         return 'avatar';
     }
 
-    protected function getNameInitialsField()
+    public function getNameInitialsField()
     {
         if (method_exists($this, 'defineNameInitialsAvatarGenerator')) {
             return $this->defineNameInitialsAvatarGenerator();

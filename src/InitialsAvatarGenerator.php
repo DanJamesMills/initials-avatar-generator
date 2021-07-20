@@ -103,17 +103,19 @@ class InitialsAvatarGenerator
 
     public function __construct()
     {
-        $this->size(Config::get('initials-avatar-generator.size'));
+        $this->size(config('initials-avatar-generator.size'));
 
-        $this->fontColour = Config::get('initials-avatar-generator.size');
+        $this->fontColour = config('initials-avatar-generator.font_colour');
 
-        $this->uppercase(Config::get('initials-avatar-generator.uppercase'));
+        $this->uppercase(config('initials-avatar-generator.uppercase'));
 
-        $this->bold = Config::get('initials-avatar-generator.size');
+        $this->bold = config('initials-avatar-generator.bold');
 
-        $this->fileFormat(Config::get('initials-avatar-generator.file_format'));
+        $this->backgroundColourRanges(config('initials-avatar-generator.colour_range'));
 
-        $this->rounded(Config::get('initials-avatar-generator.rounded'));
+        $this->fileFormat(config('initials-avatar-generator.file_format'));
+
+        $this->rounded(config('initials-avatar-generator.rounded'));
     }
 
     /**
@@ -223,6 +225,20 @@ class InitialsAvatarGenerator
             $this->initials = substr(implode('', $capitals[1]), 0, 2);
         }
         $this->initials = substr($this->name, 0, 2);
+    }
+
+    /**
+     * Background colour ranges that can be used to generate avatar.
+     *
+     * @param array $colourRange
+     *
+     * @return $this
+     */
+    public function backgroundColourRanges(array $colourRange): self
+    {
+        $this->colourRange = $colourRange;
+
+        return $this;
     }
 
     /**

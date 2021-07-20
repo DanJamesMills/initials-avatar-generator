@@ -9,7 +9,7 @@ return [
     | This is the User model used by Initials Avatar Generator.
     |
     */
-    'user_model' => App\Models\User::class,
+    'user_model' => \App\Models\User::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -113,7 +113,7 @@ return [
          * `DanJamesMills\Notes\Models\Note` model.
          */
 
-        'user' => App\Models\User::class,
+        'user' => \App\Models\User::class,
 
     ],
 ];

@@ -19,24 +19,27 @@ class AvatarUploaderAPIController extends AppBaseController
      */
     public function store(Request $request)
     {
-        $avatarUploader = new AvatarUploader();
+        try {
+            $avatarUploader = new AvatarUploader();
 
-        $this->getModelClass($request->model);
+            $record = $this->getModelClass($request->model, $request->id);
 
-        return $avatarUploader->handle($request->file);
+            $avatarFileName = $avatarUploader->handle($request->file);
 
-        // $request->user()
-        //     ->fill(['avatar' => $newFileName])
-        //     ->save();
+            $record->forceFill([$record->getAvatarField() => $avatarFileName])->save();
+        } catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
 
-        return $this->sendResponse(['file' => $request->user()->avatar], 'Avatar has been uploaded and saved. successfully');
+        return $this->sendResponse(['file' => $record->{$record->getAvatarField()}], 'Avatar has been uploaded and saved. successfully');
     }
 
-    private function getModelClass($model)
+    private function getModelClass($model, $id = null)
     {
         if (config()->has('initials-avatar-generator.models.' . $model)) {
-            dd('ye');
-            // $record = ('App\\Models\\'.ucfirst($model))::findOrFail($id);
+            return (config('initials-avatar-generator.models.' . $model))::findOrFail($id);
         }
+
+        throw new \Exception('No model exists in config.');
     }
 }
