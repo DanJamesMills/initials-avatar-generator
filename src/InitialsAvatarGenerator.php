@@ -9,13 +9,6 @@ use Intervention\Image\ImageManager;
 class InitialsAvatarGenerator
 {
     /**
-     * Api base request url.
-     *
-     * @var string
-     */
-    private $apiBaseUrl = 'https://eu.ui-avatars.com/api/';
-
-    /**
      * Size of avatar width image in pixels.
      *
      * @var int
