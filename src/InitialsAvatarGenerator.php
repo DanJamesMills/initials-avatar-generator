@@ -2,6 +2,10 @@
 
 namespace DanJamesMills\InitialsAvatarGenerator;
 
+use Intervention\Image\AbstractFont;
+use Intervention\Image\AbstractShape;
+use Intervention\Image\ImageManager;
+
 class InitialsAvatarGenerator
 {
     /**
@@ -12,11 +16,18 @@ class InitialsAvatarGenerator
     private $apiBaseUrl = 'https://eu.ui-avatars.com/api/';
 
     /**
-     * Size of avatar image in pixels.
+     * Size of avatar width image in pixels.
      *
      * @var int
      */
-    private $size;
+    private $width;
+
+    /**
+     * Size of avatar height image in pixels.
+     *
+     * @var int
+     */
+    private $height;
 
     /**
      * Font colour of avatar initials.
@@ -24,6 +35,13 @@ class InitialsAvatarGenerator
      * @var string
      */
     private $fontColour;
+
+    /**
+     * Font size of avatar initials.
+     *
+     * @var string
+     */
+    private $fontSize;
 
     /**
      * If initials should be uppercase.
@@ -64,6 +82,20 @@ class InitialsAvatarGenerator
     private $rounded;
 
     /**
+     * Size of avatar border in pixels.
+     *
+     * @var int
+     */
+    protected $borderSize;
+
+    /**
+     * Border colour.
+     *
+     * @var string
+     */
+    protected $borderColour;
+
+    /**
      * Name used for generating initials.
      *
      * @param string
@@ -101,43 +133,23 @@ class InitialsAvatarGenerator
      */
     private $generatedFilename;
 
-    public function __construct()
-    {
-        $this->size(config('initials-avatar-generator.size'));
-
-        $this->fontColour = config('initials-avatar-generator.font_colour');
-
-        $this->uppercase(config('initials-avatar-generator.uppercase'));
-
-        $this->bold = config('initials-avatar-generator.bold');
-
-        $this->backgroundColourRanges(config('initials-avatar-generator.colour_range'));
-
-        $this->fileFormat(config('initials-avatar-generator.file_format'));
-
-        $this->rounded(config('initials-avatar-generator.rounded'));
-    }
+    /**
+     * @var \Intervention\Image\Image
+     */
+    protected $image;
 
     /**
-     * Returns a url to api endpoint
-     * with populated parameters.
+     * Font file and location.
      *
-     * @return string
+     * @var string
      */
-    private function getAvatarGeneratorUrl(): string
-    {
-        $parameters = [
-            'name' => $this->initials,
-            'size' => $this->size,
-            'background' => $this->getRandomBackgroundColour(),
-            'color' => $this->fontColour,
-            'rounded' => $this->rounded,
-            'uppercase' => $this->uppercase,
-            'bold' => $this->bold,
-            'format' => $this->fileFormat
-        ];
+    protected $font;
 
-        return $this->apiBaseUrl . '?' . http_build_query($parameters);
+    protected $shape = 'square';
+
+    public function __construct()
+    {
+        $this->resetClassOptionsBackToDefault();
     }
 
     protected function avatarSavePath(): string
@@ -157,16 +169,18 @@ class InitialsAvatarGenerator
     }
 
     /**
-     * Save avatar file
+     * Save avatar image
      * to disk.
      *
      * @return void
      */
-    private function saveAvatarFileToDisk(): void
+    private function saveAvatarImageToDisk(): void
     {
         $this->generatedFilename = $this->generateRandomFilename();
 
-        file_put_contents($this->avatarSavePath().$this->generatedFilename, $this->avatarFileString);
+        $filePath = $this->avatarSavePath().$this->generatedFilename;
+
+        $this->image->save($filePath, $quality = '90');
     }
 
     /**
@@ -177,17 +191,6 @@ class InitialsAvatarGenerator
     protected function generateRandomFilename(): string
     {
         return 'IAG' . sha1($this->name . time()). '.' . $this->fileFormat;
-    }
-
-    /**
-     * Fletches avatar file from
-     * api endpoint.
-     *
-     * @return void
-     */
-    private function getAvatarFromApi(): void
-    {
-        $this->avatarFileString = file_get_contents($this->getAvatarGeneratorUrl());
     }
 
     /**
@@ -227,6 +230,11 @@ class InitialsAvatarGenerator
         $this->initials = substr($this->name, 0, 2);
     }
 
+    public function getInitials(): string
+    {
+        return ($this->uppercase) ? strtoupper($this->initials) : $this->initials;
+    }
+
     /**
      * Background colour ranges that can be used to generate avatar.
      *
@@ -242,15 +250,29 @@ class InitialsAvatarGenerator
     }
 
     /**
-     * Set the avatar/image size in pixels.
+     * Set the avatar/image width in pixels.
      *
-     * @param int $size
+     * @param int $width
      *
      * @return $this
      */
-    public function size(int $size): self
+    public function width(int $width): self
     {
-        $this->size = $size;
+        $this->width = $width;
+
+        return $this;
+    }
+
+    /**
+     * Set the avatar/image height in pixels.
+     *
+     * @param int $height
+     *
+     * @return $this
+     */
+    public function height(int $height): self
+    {
+        $this->height = $height;
 
         return $this;
     }
@@ -278,7 +300,11 @@ class InitialsAvatarGenerator
      */
     public function rounded(bool $rounded = true): self
     {
-        $this->rounded = $rounded;
+        if ($rounded) {
+            $this->shape = 'circle';
+        } else {
+            $this->shape = 'square';
+        }
 
         return $this;
     }
@@ -328,12 +354,29 @@ class InitialsAvatarGenerator
      */
     private function resetClassOptionsBackToDefault(): void
     {
-        $this->size = 500;
-        $this->fontColour = 'ffffff';
-        $this->uppercase = true;
-        $this->bold = false;
-        $this->fileFormat = 'png';
-        $this->rounded = false;
+        $this->width(config('initials-avatar-generator.width'));
+
+        $this->height(config('initials-avatar-generator.height'));
+
+        $this->borderSize = config('initials-avatar-generator.border_size');
+
+        $this->borderColour = config('initials-avatar-generator.border_colour');
+
+        $this->font = config('initials-avatar-generator.font');
+
+        $this->fontColour = config('initials-avatar-generator.font_colour');
+
+        $this->fontSize = config('initials-avatar-generator.font_size');
+
+        $this->uppercase(config('initials-avatar-generator.uppercase'));
+
+        $this->bold = config('initials-avatar-generator.bold');
+
+        $this->backgroundColourRanges(config('initials-avatar-generator.colour_range'));
+
+        $this->fileFormat(config('initials-avatar-generator.file_format'));
+
+        $this->rounded(config('initials-avatar-generator.rounded'));
     }
 
     public function getGeneratedFilename(): string
@@ -345,12 +388,82 @@ class InitialsAvatarGenerator
     {
         $this->makeInitials();
 
-        $this->getAvatarFromApi();
+        $this->buildAvatar();
 
-        $this->saveAvatarFileToDisk();
+        $this->saveAvatarImageToDisk();
 
         $this->resetClassOptionsBackToDefault();
 
         return $this->getGeneratedFilename();
+    }
+
+    public function buildAvatar()
+    {
+        $x = $this->width / 2;
+        $y = $this->height / 2;
+
+        $manager = new ImageManager(['driver' => 'gd']);
+        $this->image = $manager->canvas($this->width, $this->height);
+
+        $this->createShape();
+
+        $this->image->text(
+            $this->getInitials(),
+            $x,
+            $y,
+            function (AbstractFont $font) {
+                $font->file($this->font);
+                $font->size($this->fontSize);
+                $font->color($this->fontColour);
+                $font->align('center');
+                $font->valign('middle');
+            }
+        );
+    }
+
+    protected function createShape()
+    {
+        $method = 'create'.ucfirst($this->shape).'Shape';
+        if (method_exists($this, $method)) {
+            return $this->$method();
+        }
+
+        throw new \InvalidArgumentException("Shape [$this->shape] currently not supported.");
+    }
+
+    protected function createCircleShape()
+    {
+        $circleDiameter = $this->width - $this->borderSize;
+        $x = $this->width / 2;
+        $y = $this->height / 2;
+
+        $this->image->circle(
+            $circleDiameter,
+            $x,
+            $y,
+            function (AbstractShape $draw) {
+                $draw->background($this->getRandomBackgroundColour());
+                $draw->border($this->borderSize, $this->borderColour);
+            }
+        );
+    }
+
+    protected function createSquareShape()
+    {
+        $edge = (ceil($this->borderSize / 2));
+        $x = $y = $edge;
+        $width = $this->width - $edge;
+        $height = $this->height - $edge;
+
+        $this->image->rectangle(
+            $x,
+            $y,
+            $width,
+            $height,
+            function (AbstractShape $draw) {
+                $draw->background($this->getRandomBackgroundColour());
+                $draw->border($this->borderSize, $this->borderColour);
+            }
+        );
     }
 }
