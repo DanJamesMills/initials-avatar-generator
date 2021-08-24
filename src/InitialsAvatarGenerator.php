@@ -355,7 +355,9 @@ class InitialsAvatarGenerator
 
         $this->borderColour = config('initials-avatar-generator.border_colour');
 
-        $this->font = config('initials-avatar-generator.font');
+        // $this->font = config('initials-avatar-generator.font');
+
+        $this->font = __DIR__.'/../fonts/OpenSans-Bold.ttf';
 
         $this->fontColour = config('initials-avatar-generator.font_colour');
 
