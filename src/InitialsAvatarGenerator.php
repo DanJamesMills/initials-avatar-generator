@@ -180,7 +180,7 @@ class InitialsAvatarGenerator
 
         $filePath = $this->avatarSavePath().$this->generatedFilename;
 
-        $this->image->save($filePath, $quality = '90');
+        $this->image->save($filePath, $quality = '100');
     }
 
     /**
