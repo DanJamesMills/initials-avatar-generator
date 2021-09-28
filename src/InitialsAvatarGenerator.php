@@ -186,13 +186,13 @@ class InitialsAvatarGenerator
         $this->image->save($filePath, $quality = '100');
     }
 
-    private function getFilename(): string
+    private function getFilename()
     {
-        if (isset($this->customFilename)) {
+        if ($this->customFilename) {
             return 'IAG' . $this->customFilename . '.' . $this->fileFormat;
         }
 
-        if (isset($this->generatedFilename)) {
+        if ($this->generatedFilename) {
             return $this->generatedFilename;
         }
     }
