@@ -127,6 +127,14 @@ class InitialsAvatarGenerator
     private $generatedFilename;
 
     /**
+     * A filename set by user
+     * for saving avatar file.
+     *
+     * @var string
+     */
+    private $customFilename;
+
+    /**
      * @var \Intervention\Image\Image
      */
     protected $image;
@@ -169,11 +177,24 @@ class InitialsAvatarGenerator
      */
     private function saveAvatarImageToDisk(): void
     {
-        $this->generatedFilename = $this->generateRandomFilename();
+        if (!$this->getFilename()) {
+            $this->generatedFilename = $this->generateRandomFilename();
+        }
 
-        $filePath = $this->avatarSavePath().$this->generatedFilename;
+        $filePath = $this->avatarSavePath().$this->getFilename();
 
         $this->image->save($filePath, $quality = '100');
+    }
+
+    private function getFilename(): string
+    {
+        if (isset($this->customFilename)) {
+            return 'IAG' . $this->customFilename . '.' . $this->fileFormat;
+        }
+
+        if (isset($this->generatedFilename)) {
+            return $this->generatedFilename;
+        }
     }
 
     /**
@@ -316,6 +337,26 @@ class InitialsAvatarGenerator
         return $this;
     }
 
+    /**
+     * Set filename that will be used
+     * to save avatar file as only pass
+     * name not with file extension.
+     *
+     * @param string $filename
+     *
+     * @return $this
+     */
+    public function filename(string $filename): self
+    {
+        if (!empty(pathinfo($filename, PATHINFO_EXTENSION))) {
+            throw new \Exception('Filename should not contain any file extensions');
+        }
+
+        $this->customFilename = $filename;
+
+        return $this;
+    }
+
     private function getSupportedFileFormats(): array
     {
         return ['png', 'svg'];
@@ -389,7 +430,7 @@ class InitialsAvatarGenerator
 
         $this->resetClassOptionsBackToDefault();
 
-        return $this->getGeneratedFilename();
+        return $this->getFilename();
     }
 
     public function buildAvatar()

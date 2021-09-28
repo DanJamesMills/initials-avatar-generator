@@ -13,11 +13,18 @@ trait HasAvatar
         });
 
         static::updating(function ($model) {
-            if (strpos($model->{$model->getAvatarField()}, 'IAG') !== false) {
-                $model->{$model->getAvatarField()} = \InitialsAvatarGenerator::name(
-                    $model->getNameInitialsField()
-                )->generate();
+            if (strpos($model->{$model->getAvatarField()}, 'IAG') == false) {
+                return;
             }
+
+            if (!$model->checkIfNameInitialsChanged()) {
+                return;
+            }
+
+            $model->{$model->getAvatarField()} = \InitialsAvatarGenerator::name(
+                $model->getNameInitialsField()
+            )->filename($model->getFilenameToSaveAs())
+            ->generate();
         });
     }
 
@@ -28,6 +35,21 @@ trait HasAvatar
         }
 
         return 'avatar';
+    }
+
+    public function getFilenameWithoutExtension(): string
+    {
+        return str_replace('IAG', '', pathinfo($this->{$this->getAvatarField()}, PATHINFO_FILENAME));
+    }
+
+    public function checkIfNameInitialsChanged()
+    {
+        return $this->getFilenameToSaveAs() != $this->getFilenameWithoutExtension();
+    }
+
+    public function getFilenameToSaveAs()
+    {
+        return md5($this->id . $this->getNameInitialsField());
     }
 
     public function getNameInitialsField()
