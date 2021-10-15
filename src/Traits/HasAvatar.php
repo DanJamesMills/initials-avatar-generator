@@ -21,10 +21,7 @@ trait HasAvatar
                 return;
             }
 
-            $model->{$model->getAvatarField()} = \InitialsAvatarGenerator::name(
-                $model->getNameInitialsField()
-            )->filename($model->getFilenameToSaveAs())
-            ->generate();
+            $model->generateAvatarAndSet();
         });
     }
 
@@ -35,6 +32,14 @@ trait HasAvatar
         }
 
         return 'avatar';
+    }
+
+    public function generateAvatarAndSet()
+    {
+        $this->{$this->getAvatarField()} = \InitialsAvatarGenerator::name(
+            $this->getNameInitialsField()
+        )->filename($this->getFilenameToSaveAs())
+        ->generate();
     }
 
     public function getFilenameWithoutExtension(): string
