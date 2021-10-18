@@ -34,6 +34,25 @@ class AvatarUploaderAPIController extends AppBaseController
         return $this->sendResponse(['file' => $record->{$record->getAvatarField()}], 'Avatar has been uploaded and saved. successfully');
     }
 
+    /**
+     * Remove the avatar and set back to default.
+     * DELETE /avatar.
+     *
+     * @param Request $request
+     *
+     * @throws \Exception
+     *
+     * @return Response
+     */
+    public function destroy(Request $request)
+    {
+        $record = $this->getModelClass($request->model, $request->id);
+        $record->generateAvatarAndSet();
+        $record->save();
+        
+        return $this->sendResponse(['file' => $record->{$record->getAvatarField()}], 'Avatar has been uploaded and saved. successfully');
+    }
+
     private function getModelClass($model, $id = null)
     {
         if (config()->has('initials-avatar-generator.models.' . $model)) {
