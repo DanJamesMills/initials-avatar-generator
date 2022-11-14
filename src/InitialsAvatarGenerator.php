@@ -155,7 +155,7 @@ class InitialsAvatarGenerator
 
     protected function avatarSavePath(): string
     {
-        return storage_path('app/public/avatars/');
+        return \Config::get('initials-avatar-generator.storage_path');
     }
 
     /**
@@ -374,12 +374,12 @@ class InitialsAvatarGenerator
         if (!in_array($fileFormat, $this->getSupportedFileFormats())) {
             throw new \Exception("File format not supported, accepted file formats are 'png' or 'svg'");
         }
-        
+
         $this->fileFormat = $fileFormat;
 
         return $this;
     }
-    
+
     /**
      * Reset class options
      * back to default.

@@ -18,7 +18,7 @@ class AvatarUploader
      * @var string
      */
     private $generatedFilename;
-    
+
     /**
      * Save avatar file
      * to disk.
@@ -29,14 +29,14 @@ class AvatarUploader
     {
         $this->generatedFilename = $this->generateRandomFilename();
 
-        $this->file->move(storage_path('app/public/avatars'), $this->generatedFilename);
+        $this->file->move(config('initials-avatar-generator.storage_path'), $this->generatedFilename);
     }
 
 
     private function resizeImage()
     {
-        \Image::make(storage_path('app/public/avatars/' . $this->generatedFilename))
-            ->resize(800, 800)
+        \Image::make(config('initials-avatar-generator.storage_path') . $this->generatedFilename)
+            ->resize(config('initials-avatar-generator.width'), config('initials-avatar-generator.height'))
             ->save();
     }
 
@@ -54,11 +54,11 @@ class AvatarUploader
     {
         return $this->generatedFilename;
     }
-    
+
     public function handle(UploadedFile $file): string
     {
         $this->file = $file;
-        
+
         $this->saveAvatarFileToDisk();
 
         $this->resizeImage();

@@ -13,7 +13,7 @@ class InitialsAvatarGeneratorServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
-        
+
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../config/config.php' => config_path('initials-avatar-generator.php'),
@@ -31,7 +31,7 @@ class InitialsAvatarGeneratorServiceProvider extends ServiceProvider
 
         // Register the main class to use with the facade
         $this->app->singleton('initials-avatar-generator', function () {
-            return new InitialsAvatarGenerator;
+            return new InitialsAvatarGenerator();
         });
     }
 }

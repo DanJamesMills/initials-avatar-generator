@@ -1,10 +1,10 @@
-# Very short description of the package
+# Intro
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/danjamesmills/initials-avatar-generator.svg?style=flat-square)](https://packagist.org/packages/danjamesmills/initials-avatar-generator)
 [![Total Downloads](https://img.shields.io/packagist/dt/danjamesmills/initials-avatar-generator.svg?style=flat-square)](https://packagist.org/packages/danjamesmills/initials-avatar-generator)
 ![GitHub Actions](https://github.com/danjamesmills/initials-avatar-generator/actions/workflows/main.yml/badge.svg)
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
+Display unique avatar image for any models based on their fields you specify.
 
 ## Installation
 
@@ -14,16 +14,34 @@ You can install the package via composer:
 composer require danjamesmills/initials-avatar-generator
 ```
 
-## Usage
+## Publish Config (optional)
+
+You should publish the migration and the config/initials-avatar-generator.php config file with:
 
 ```php
-// Usage description here
+php artisan vendor:publish --provider="DanJamesMills\InitialsAvatarGenerator\InitialsAvatarGeneratorServiceProvider"
 ```
 
-### Testing
+Run the migrations: After the config and migration have been published and configured, you can create the tables for this package by running:
 
-```bash
-composer test
+```php
+php artisan migrate
+```
+
+## Basic Usage
+
+First, add the DanJamesMills\InitialsAvatarGenerator\Traits\HasAvatar trait to your User model(s):
+
+```php
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use DanJamesMills\InitialsAvatarGenerator\Traits\HasAvatar;
+
+class User extends Authenticatable
+{
+    use HasAvatar;
+
+    // ...
+}
 ```
 
 ### Changelog

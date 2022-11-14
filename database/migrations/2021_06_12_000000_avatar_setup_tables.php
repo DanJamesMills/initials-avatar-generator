@@ -12,7 +12,7 @@ class AvatarSetupTables extends Migration
      */
     public function up()
     {
-        Schema::table(\Config::get('initials-avatar-generator.users_table'), function (Blueprint $table) {
+        Schema::table(config('initials-avatar-generator.users_table'), function (Blueprint $table) {
             $table->string('avatar')->nullable();
         });
     }
@@ -24,7 +24,7 @@ class AvatarSetupTables extends Migration
      */
     public function down()
     {
-        Schema::table(\Config::get('initials-avatar-generator.users_table'), function (Blueprint $table) {
+        Schema::table(config('initials-avatar-generator.users_table'), function (Blueprint $table) {
             $table->dropColumn('avatar');
         });
     }

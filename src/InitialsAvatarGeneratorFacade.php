@@ -4,9 +4,6 @@ namespace DanJamesMills\InitialsAvatarGenerator;
 
 use Illuminate\Support\Facades\Facade;
 
-/**
- * @see \DanJamesMills\InitialsAvatarGenerator\Skeleton\SkeletonClass
- */
 class InitialsAvatarGeneratorFacade extends Facade
 {
     /**
