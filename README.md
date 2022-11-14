@@ -44,6 +44,49 @@ class User extends Authenticatable
 }
 ```
 
+### Defining An Accessor
+
+```php
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use DanJamesMills\InitialsAvatarGenerator\Traits\HasAvatar;
+
+class User extends Authenticatable
+{
+    /**
+     * Get the user's avatar.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function avatar(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => url("/storage/avatars/{$value}"),
+        );
+    }
+}
+```
+
+### Define Model Avatar Fields
+
+```php
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use DanJamesMills\InitialsAvatarGenerator\Traits\HasAvatar;
+
+class User extends Authenticatable
+{
+    /**
+     * Used to define the fields of which initials avatar 
+     * generator will create initials from.
+     *
+     * @return string
+     */
+    private function defineNameInitialsAvatarGenerator(): string
+    {
+        return $this->name;
+    }
+}
+```
+
 ### Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
@@ -64,7 +107,3 @@ If you discover any security related issues, please email daniel620@hotmail.co.u
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
-
-## Laravel Package Boilerplate
-
-This package was generated using the [Laravel Package Boilerplate](https://laravelpackageboilerplate.com).
