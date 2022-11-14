@@ -10,7 +10,7 @@ return [
     | Folder path specifying where to save avatar images.
     |
     */
-    'storage_path' => storage_path('app/public/avatars'),
+    'storage_path' => storage_path('app/public/avatars/'),
 
     /*
     |--------------------------------------------------------------------------

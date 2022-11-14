@@ -28,6 +28,24 @@ Run the migrations: After the config and migration have been published and confi
 php artisan migrate
 ```
 
+## Publicly Accessible Storage Path
+
+In the config/initials-avatar-generator.php we have used the following path below for storage of avatar images, feel free to change this.
+
+```php
+'storage_path' => storage_path('app/public/avatars/'),
+```
+
+If your using the above don't forget to link storage and public paths from console and create 'avatars' folder.
+
+```php
+mkdir storage/app/public/avatars
+```
+
+```php
+php artisan storage:link
+```
+
 ## Basic Usage
 
 First, add the DanJamesMills\InitialsAvatarGenerator\Traits\HasAvatar trait to your User model(s):
@@ -49,6 +67,7 @@ class User extends Authenticatable
 ```php
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use DanJamesMills\InitialsAvatarGenerator\Traits\HasAvatar;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable
 {
@@ -80,11 +99,57 @@ class User extends Authenticatable
      *
      * @return string
      */
-    private function defineNameInitialsAvatarGenerator(): string
+    protected function defineNameInitialsAvatarGenerator(): string
     {
         return $this->name;
     }
 }
+```
+
+If you have used a different column name from the default migration name of 'avatar', 
+you must define this new column name on the model.
+
+```php
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use DanJamesMills\InitialsAvatarGenerator\Traits\HasAvatar;
+
+class User extends Authenticatable
+{
+    /**
+     * Used to define the column field name of which 
+     * you want to save avatar image to.
+     *
+     * @return string
+     */
+    protected function defineAvatarColumnName(): string
+    {
+        return 'avatarColumnName';
+    }
+}
+```
+
+### Generating Avatar
+
+If your model has no avatar set, you can generate one below.
+
+```php
+$user = User::findOrFail(4);
+
+$user->generateAvatarAndSet();
+$user->save();
+
+return "<img src='{$user->avatar}' width='250px' />";
+```
+
+If you update the value of the avatar field i.e user's name, an avatar will be automatically generated and save for you.
+
+```php
+$user = User::findOrFail(4);
+
+$user->name = 'John Doe'; // changed from Dan Doe
+$user->save();
+
+return "<img src='{$user->avatar}' width='250px' />";
 ```
 
 ### Changelog
