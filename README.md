@@ -141,7 +141,7 @@ $user->save();
 return "<img src='{$user->avatar}' width='250px' />";
 ```
 
-If you update the value of the avatar field i.e user's name, an avatar will be automatically generated and save for you.
+If you update the value of the avatar field i.e user's name, an avatar will be automatically generated and saved for you.
 
 ```php
 $user = User::findOrFail(4);
