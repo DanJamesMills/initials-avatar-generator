@@ -4,7 +4,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/danjamesmills/initials-avatar-generator.svg?style=flat-square)](https://packagist.org/packages/danjamesmills/initials-avatar-generator)
 ![GitHub Actions](https://github.com/danjamesmills/initials-avatar-generator/actions/workflows/main.yml/badge.svg)
 
-Display unique avatar image for any models based on their fields you specify.
+Introducing the Laravel Avatar package, a powerful tool for generating unique avatar images for any model in your Laravel application. This package allows you to easily create unique avatar images based on fields you specify for your models, such as name, email, or any other field. With this package, you can easily add avatar functionality to your application and ensure that each user or model has a distinct and personalised avatar image. It's also configurable to use different image generation libraries, so you can pick the one that fits your project best. With a simple and intuitive API, you can easily generate avatars for any model in your application, saving you time and effort. The Laravel Avatar package makes it easy to add personalized avatars to your application, enhance the user experience and make your app look more professional.
 
 ## Installation
 
