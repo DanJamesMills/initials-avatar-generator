@@ -4,10 +4,10 @@ namespace DanJamesMills\InitialsAvatarGenerator\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use DanJamesMills\InitialsAvatarGenerator\AvatarUploader;
-use DanJamesMills\SettingsUi\Http\Controllers\AppBaseController;
+use DanJamesMills\LaravelResponse\Http\Controllers\BaseController;
 use Response;
 
-class AvatarUploaderAPIController extends AppBaseController
+class AvatarUploaderAPIController extends BaseController
 {
     /**
      * Store a newly created avatar in storage.
@@ -49,7 +49,7 @@ class AvatarUploaderAPIController extends AppBaseController
         $record = $this->getModelClass($request->model, $request->id);
         $record->generateAvatarAndSet();
         $record->save();
-        
+
         return $this->sendResponse(['file' => $record->{$record->getAvatarField()}], 'Avatar has been uploaded and saved. successfully');
     }
 
