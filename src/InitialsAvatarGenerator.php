@@ -39,14 +39,14 @@ class InitialsAvatarGenerator
     /**
      * If initials should be uppercase.
      *
-     * @var boolean
+     * @var bool
      */
     private $uppercase;
 
     /**
      * If initials should be bold.
      *
-     * @var boolean
+     * @var bool
      */
     private $bold;
 
@@ -161,8 +161,6 @@ class InitialsAvatarGenerator
     /**
      * Gets a random background colour
      * from colourRange array.
-     *
-     * @return string
      */
     protected function getRandomBackgroundColour(): string
     {
@@ -172,12 +170,10 @@ class InitialsAvatarGenerator
     /**
      * Save avatar image
      * to disk.
-     *
-     * @return void
      */
     private function saveAvatarImageToDisk(): void
     {
-        if (!$this->getFilename()) {
+        if (! $this->getFilename()) {
             $this->generatedFilename = $this->generateRandomFilename();
         }
 
@@ -189,7 +185,7 @@ class InitialsAvatarGenerator
     private function getFilename()
     {
         if ($this->customFilename) {
-            return 'IAG' . $this->customFilename . '.' . $this->fileFormat;
+            return 'IAG'.$this->customFilename.'.'.$this->fileFormat;
         }
 
         if ($this->generatedFilename) {
@@ -199,30 +195,28 @@ class InitialsAvatarGenerator
 
     /**
      * Generates a random file name.
-     *
-     * @return string
      */
     protected function generateRandomFilename(): string
     {
-        return 'IAG' . sha1($this->name . time()). '.' . $this->fileFormat;
+        return 'IAG'.sha1($this->name.time()).'.'.$this->fileFormat;
     }
 
     /**
      * Generate initials from a name.
-     *
-     * @return void
      */
     private function makeInitials(): void
     {
         if (strlen($this->name) == 2) {
             $this->initials = $this->name;
+
             return;
         }
 
         $words = explode(' ', $this->name);
 
         if (count($words) >= 2) {
-            $this->initials = substr($words[0], 0, 1) . substr(end($words), 0, 1);
+            $this->initials = substr($words[0], 0, 1).substr(end($words), 0, 1);
+
             return;
         }
 
@@ -231,8 +225,6 @@ class InitialsAvatarGenerator
 
     /**
      * Make initials from a word with no spaces.
-     *
-     * @return void
      */
     protected function makeInitialsFromSingleWord(): void
     {
@@ -252,7 +244,6 @@ class InitialsAvatarGenerator
     /**
      * Background colour ranges that can be used to generate avatar.
      *
-     * @param array $colourRange
      *
      * @return $this
      */
@@ -266,7 +257,6 @@ class InitialsAvatarGenerator
     /**
      * Set the avatar/image width in pixels.
      *
-     * @param int $width
      *
      * @return $this
      */
@@ -280,7 +270,6 @@ class InitialsAvatarGenerator
     /**
      * Set the avatar/image height in pixels.
      *
-     * @param int $height
      *
      * @return $this
      */
@@ -294,7 +283,6 @@ class InitialsAvatarGenerator
     /**
      * Set the name used for generating initials.
      *
-     * @param string $nameOrInitials
      *
      * @return $this
      */
@@ -308,7 +296,6 @@ class InitialsAvatarGenerator
     /**
      * Set avatar to be a circle.
      *
-     * @param boolean $rounded
      *
      * @return $this
      */
@@ -326,7 +313,6 @@ class InitialsAvatarGenerator
     /**
      * Set initials should be uppercase or not.
      *
-     * @param boolean $uppercase
      *
      * @return $this
      */
@@ -342,13 +328,12 @@ class InitialsAvatarGenerator
      * to save avatar file as only pass
      * name not with file extension.
      *
-     * @param string $filename
      *
      * @return $this
      */
     public function filename(string $filename): self
     {
-        if (!empty(pathinfo($filename, PATHINFO_EXTENSION))) {
+        if (! empty(pathinfo($filename, PATHINFO_EXTENSION))) {
             throw new \Exception('Filename should not contain any file extensions');
         }
 
@@ -365,13 +350,12 @@ class InitialsAvatarGenerator
     /**
      * Set avatar file format.
      *
-     * @param string $fileFormat
      *
      * @return $this
      */
     public function fileFormat(string $fileFormat): self
     {
-        if (!in_array($fileFormat, $this->getSupportedFileFormats())) {
+        if (! in_array($fileFormat, $this->getSupportedFileFormats())) {
             throw new \Exception("File format not supported, accepted file formats are 'png' or 'svg'");
         }
 
@@ -383,8 +367,6 @@ class InitialsAvatarGenerator
     /**
      * Reset class options
      * back to default.
-     *
-     * @return void
      */
     private function resetClassOptionsBackToDefault(): void
     {

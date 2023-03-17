@@ -2,9 +2,9 @@
 
 namespace DanJamesMills\InitialsAvatarGenerator\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 use DanJamesMills\InitialsAvatarGenerator\AvatarUploader;
 use DanJamesMills\LaravelResponse\Http\Controllers\BaseController;
+use Illuminate\Http\Request;
 use Response;
 
 class AvatarUploaderAPIController extends BaseController
@@ -13,7 +13,6 @@ class AvatarUploaderAPIController extends BaseController
      * Store a newly created avatar in storage.
      * POST /avatar
      *
-     * @param Request $request
      *
      * @return Response
      */
@@ -38,11 +37,10 @@ class AvatarUploaderAPIController extends BaseController
      * Remove the avatar and set back to default.
      * DELETE /avatar.
      *
-     * @param Request $request
-     *
-     * @throws \Exception
      *
      * @return Response
+     *
+     * @throws \Exception
      */
     public function destroy(Request $request)
     {
@@ -55,8 +53,8 @@ class AvatarUploaderAPIController extends BaseController
 
     private function getModelClass($model, $id = null)
     {
-        if (config()->has('initials-avatar-generator.models.' . $model)) {
-            return (config('initials-avatar-generator.models.' . $model))::findOrFail($id);
+        if (config()->has('initials-avatar-generator.models.'.$model)) {
+            return (config('initials-avatar-generator.models.'.$model))::findOrFail($id);
         }
 
         throw new \Exception('No model exists in config.');

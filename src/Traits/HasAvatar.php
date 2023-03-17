@@ -9,7 +9,6 @@ trait HasAvatar
     protected static function bootHasAvatar()
     {
         static::creating(function ($model) {
-
             $model->generateAvatarAndSet();
         });
 
@@ -18,7 +17,7 @@ trait HasAvatar
                 return;
             }
 
-            if (!$model->checkIfNameInitialsChanged()) {
+            if (! $model->checkIfNameInitialsChanged()) {
                 return;
             }
 
@@ -38,7 +37,7 @@ trait HasAvatar
     public function generateAvatarAndSet()
     {
         $generator = new InitialsAvatarGenerator();
-            
+
         $this->{$this->getAvatarField()} = $generator->name(
             $this->getNameInitialsField()
         )->generate();
@@ -56,7 +55,7 @@ trait HasAvatar
 
     public function getFilenameToSaveAs()
     {
-        return md5($this->id . $this->getNameInitialsField());
+        return md5($this->id.$this->getNameInitialsField());
     }
 
     public function getNameInitialsField()

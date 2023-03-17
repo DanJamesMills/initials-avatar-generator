@@ -2,24 +2,22 @@
 
 namespace DanJamesMills\InitialsAvatarGenerator\Tests\Models;
 
-use Illuminate\Foundation\Auth\User as UserModel;
 use DanJamesMills\InitialsAvatarGenerator\Traits\HasAvatar;
+use Illuminate\Foundation\Auth\User as UserModel;
 
 class User extends UserModel
 {
     use HasAvatar;
 
-	protected $fillable = [
-		'name',
-		'email',
-		'password',
-	];
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+    ];
 
-	/**
-     * Used to define the fields of which initials avatar 
+    /**
+     * Used to define the fields of which initials avatar
      * generator will create initials from.
-     *
-     * @return string
      */
     protected function defineNameInitialsAvatarGenerator(): string
     {
