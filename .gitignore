@@ -1,1 +1,7 @@
-.DS_Store
+.DS_Storebuild
+composer.lock
+docs
+vendor
+coverage
+.DS_STORE
+.phpunit.result.cache

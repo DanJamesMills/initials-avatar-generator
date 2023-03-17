@@ -2,18 +2,19 @@
 
 namespace DanJamesMills\InitialsAvatarGenerator\Traits;
 
+use DanJamesMills\InitialsAvatarGenerator\InitialsAvatarGenerator;
+
 trait HasAvatar
 {
     protected static function bootHasAvatar()
     {
         static::creating(function ($model) {
-            $model->{$model->getAvatarField()} = \InitialsAvatarGenerator::name(
-                $model->getNameInitialsField()
-            )->generate();
+
+            $model->generateAvatarAndSet();
         });
 
         static::updating(function ($model) {
-            if (strpos($model->{$model->getAvatarField()}, 'IAG') == false) {
+            if (strpos($model->{$model->getAvatarField()}, 'IAG') != false) {
                 return;
             }
 
@@ -36,10 +37,11 @@ trait HasAvatar
 
     public function generateAvatarAndSet()
     {
-        $this->{$this->getAvatarField()} = \InitialsAvatarGenerator::name(
+        $generator = new InitialsAvatarGenerator();
+            
+        $this->{$this->getAvatarField()} = $generator->name(
             $this->getNameInitialsField()
-        )->filename($this->getFilenameToSaveAs())
-        ->generate();
+        )->generate();
     }
 
     public function getFilenameWithoutExtension(): string
