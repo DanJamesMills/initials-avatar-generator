@@ -3,7 +3,6 @@
 namespace DanJamesMills\InitialsAvatarGenerator\Tests;
 
 use DanJamesMills\InitialsAvatarGenerator\InitialsAvatarGeneratorServiceProvider;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Auth\User;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
