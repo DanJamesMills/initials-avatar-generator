@@ -19,15 +19,15 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         ];
     }
 
-	/**
-	 * Define database migrations.
-	 *
-	 * @return void
-	 */
-	protected function defineDatabaseMigrations()
-	{
-		$this->loadLaravelMigrations();
-	}
+    /**
+     * Define database migrations.
+     *
+     * @return void
+     */
+    protected function defineDatabaseMigrations()
+    {
+        $this->loadLaravelMigrations();
+    }
 
     protected function getEnvironmentSetUp($app)
     {
@@ -39,7 +39,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'prefix' => '',
         ]);
         $app['config']->set('initials-avatar-generator.user_model', \Illuminate\Foundation\Auth\User::class);
-        $app['config']->set('initials-avatar-generator.storage_path', __DIR__ .'/');
+        $app['config']->set('initials-avatar-generator.storage_path', __DIR__.'/');
 
         $app['config']->set('app.key', 'base64:BHUhusiFkxF97awGsMLp7t8dyjjackvOygnmL7fTDoQ=');
     }

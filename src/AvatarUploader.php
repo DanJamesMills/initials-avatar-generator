@@ -22,8 +22,6 @@ class AvatarUploader
     /**
      * Save avatar file
      * to disk.
-     *
-     * @return void
      */
     private function saveAvatarFileToDisk(): void
     {
@@ -32,22 +30,19 @@ class AvatarUploader
         $this->file->move(config('initials-avatar-generator.storage_path'), $this->generatedFilename);
     }
 
-
     private function resizeImage()
     {
-        \Image::make(config('initials-avatar-generator.storage_path') . $this->generatedFilename)
+        \Image::make(config('initials-avatar-generator.storage_path').$this->generatedFilename)
             ->resize(config('initials-avatar-generator.width'), config('initials-avatar-generator.height'))
             ->save();
     }
 
     /**
      * Generates a random file name.
-     *
-     * @return string
      */
     protected function generateRandomFilename(): string
     {
-        return sha1($this->file->getClientOriginalName() . time()). '.' . $this->file->getClientOriginalExtension();
+        return sha1($this->file->getClientOriginalName().time()).'.'.$this->file->getClientOriginalExtension();
     }
 
     public function getGeneratedFilename(): string
