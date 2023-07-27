@@ -6,26 +6,38 @@ use DanJamesMills\InitialsAvatarGenerator\InitialsAvatarGenerator;
 
 trait HasAvatar
 {
+    use HasAvatarUploader;
+
+    /**
+     * Boot the HasAvatar trait.
+     */
     protected static function bootHasAvatar()
     {
         static::creating(function ($model) {
             $model->generateAvatarAndSet();
         });
 
-        static::updating(function ($model) {
-            if (strpos($model->{$model->getAvatarField()}, 'IAG') != false) {
-                return;
+        static::saving(function ($model) {
+            if (! $model->isDirty($model->getAvatarField())) {
+                if ($model->checkIfAvatarIsNotCustomImage($model->{$model->getAvatarField()}) && $model->checkIfNameInitialsChanged()) {
+                    $model->generateAvatarAndSet();
+                }
             }
-
-            if (! $model->checkIfNameInitialsChanged()) {
-                return;
-            }
-
-            $model->generateAvatarAndSet();
         });
     }
 
-    public function getAvatarField()
+    /**
+     * Check if the avatar is not a custom image.
+     */
+    public function checkIfAvatarIsNotCustomImage(string $avatar): bool
+    {
+        return strpos($avatar, 'IAG') !== false;
+    }
+
+    /**
+     * Get the avatar field name.
+     */
+    public function getAvatarField(): string
     {
         if (method_exists($this, 'defineAvatarColumnName')) {
             return $this->defineAvatarColumnName();
@@ -34,31 +46,44 @@ trait HasAvatar
         return 'avatar';
     }
 
-    public function generateAvatarAndSet()
+    /**
+     * Generate the avatar and set it to the model.
+     */
+    public function generateAvatarAndSet(): void
     {
         $generator = new InitialsAvatarGenerator();
 
-        $this->{$this->getAvatarField()} = $generator->name(
-            $this->getNameInitialsField()
-        )->generate();
+        $this->{$this->getAvatarField()} = $generator->name($this->getNameInitialsField())->generate();
     }
 
+    /**
+     * Get the filename without the extension from the avatar.
+     */
     public function getFilenameWithoutExtension(): string
     {
         return str_replace('IAG', '', pathinfo($this->{$this->getAvatarField()}, PATHINFO_FILENAME));
     }
 
-    public function checkIfNameInitialsChanged()
+    /**
+     * Check if the name initials have changed.
+     */
+    public function checkIfNameInitialsChanged(): bool
     {
-        return $this->getFilenameToSaveAs() != $this->getFilenameWithoutExtension();
+        return $this->getFilenameToSaveAs() !== $this->getFilenameWithoutExtension();
     }
 
-    public function getFilenameToSaveAs()
+    /**
+     * Get the filename to save as.
+     */
+    public function getFilenameToSaveAs(): string
     {
         return md5($this->id.$this->getNameInitialsField());
     }
 
-    public function getNameInitialsField()
+    /**
+     * Get the name initials field.
+     */
+    public function getNameInitialsField(): string
     {
         if (method_exists($this, 'defineNameInitialsAvatarGenerator')) {
             return $this->defineNameInitialsAvatarGenerator();
