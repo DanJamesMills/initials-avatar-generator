@@ -3,6 +3,7 @@
 namespace DanJamesMills\InitialsAvatarGenerator\Traits;
 
 use DanJamesMills\InitialsAvatarGenerator\InitialsAvatarGenerator;
+use Illuminate\Http\UploadedFile;
 
 trait HasAvatar
 {
@@ -18,12 +19,33 @@ trait HasAvatar
         });
 
         static::saving(function ($model) {
-            if (! $model->isDirty($model->getAvatarField())) {
-                if ($model->checkIfAvatarIsNotCustomImage($model->{$model->getAvatarField()}) && $model->checkIfNameInitialsChanged()) {
+
+            $avatarField = $model->getAvatarField();
+
+            if ($model->attributes[$avatarField] instanceof UploadedFile) {
+                $model->{$avatarField} = $model->uploadAvatar(
+                    $model->attributes[$avatarField],
+                    config('initials-avatar-generator.storage_path'),
+                    'local'
+                );
+            }
+
+            if (! $model->isDirty($avatarField)) {
+                if ($model->checkIfAvatarIsNotCustomImage($model->{$avatarField}) && $model->checkIfNameInitialsChanged()) {
                     $model->generateAvatarAndSet();
                 }
             }
         });
+    }
+
+    /**
+     * Upload file to the server.
+     */
+    private function uploadAvatar(UploadedFile $file, string $path, string $disk = 'public'): string
+    {
+        $fileName = $file->store($path, $disk);
+
+        return pathinfo($fileName, PATHINFO_BASENAME);
     }
 
     /**

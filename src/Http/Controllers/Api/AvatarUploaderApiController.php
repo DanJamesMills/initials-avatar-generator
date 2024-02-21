@@ -7,7 +7,7 @@ use DanJamesMills\LaravelResponse\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
 use Response;
 
-class AvatarUploaderAPIController extends BaseController
+class AvatarUploaderApiController extends BaseController
 {
     /**
      * Store a newly created avatar in storage.
@@ -23,9 +23,9 @@ class AvatarUploaderAPIController extends BaseController
 
             $record = $this->getModelClass($request->model, $request->id);
 
-            $avatarFileName = $avatarUploader->handle($request->file);
+//            $avatarFileName = $avatarUploader->handle($request->file);
 
-            $record->forceFill([$record->getAvatarField() => $avatarFileName])->save();
+            $record->forceFill([$record->getAvatarField() => $request->file])->save();
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }

@@ -2,6 +2,7 @@
 
 namespace DanJamesMills\InitialsAvatarGenerator;
 
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\AbstractFont;
 use Intervention\Image\AbstractShape;
 use Intervention\Image\ImageManager;
@@ -179,7 +180,9 @@ class InitialsAvatarGenerator
 
         $filePath = $this->avatarSavePath().$this->getFilename();
 
-        $this->image->save($filePath, $quality = '100');
+        $imageContents = (string) $this->image->encode('jpg', 100);
+
+        Storage::put($filePath, $imageContents);
     }
 
     private function getFilename()
