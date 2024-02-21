@@ -23,7 +23,7 @@ class AvatarUploaderApiController extends BaseController
 
             $record = $this->getModelClass($request->model, $request->id);
 
-//            $avatarFileName = $avatarUploader->handle($request->file);
+            //            $avatarFileName = $avatarUploader->handle($request->file);
 
             $record->forceFill([$record->getAvatarField() => $request->file])->save();
         } catch (Exception $e) {
