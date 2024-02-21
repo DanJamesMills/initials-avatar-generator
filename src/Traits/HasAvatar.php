@@ -29,7 +29,7 @@ trait HasAvatar
                     'local'
                 );
             } else {
-                $model->{$field} = $model->getRawOriginal($avatarField);
+                $model->{$avatarField} = $model->getRawOriginal($avatarField);
             }
 
             if (! $model->isDirty($avatarField)) {
