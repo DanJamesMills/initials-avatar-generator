@@ -28,6 +28,8 @@ trait HasAvatar
                     config('initials-avatar-generator.storage_path'),
                     'local'
                 );
+            } else {
+                $model->{$field} = $model->getRawOriginal($avatarField);
             }
 
             if (! $model->isDirty($avatarField)) {
