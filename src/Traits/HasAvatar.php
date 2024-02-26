@@ -22,7 +22,7 @@ trait HasAvatar
 
             $avatarField = $model->getAvatarField();
 
-            if ($model->attributes[$avatarField] instanceof UploadedFile) {
+            if (isset($model->attributes[$avatarField]) && $model->attributes[$avatarField] instanceof UploadedFile) {
                 $model->{$avatarField} = $model->uploadAvatar(
                     $model->attributes[$avatarField],
                     config('initials-avatar-generator.storage_path'),
