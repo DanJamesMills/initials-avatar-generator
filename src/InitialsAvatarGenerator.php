@@ -159,6 +159,11 @@ class InitialsAvatarGenerator
         return \Config::get('initials-avatar-generator.storage_path');
     }
 
+    protected function getStorageDisk(): string
+    {
+        return \Config::get('initials-avatar-generator.storage_disk');
+    }
+
     /**
      * Gets a random background colour
      * from colourRange array.
@@ -182,7 +187,7 @@ class InitialsAvatarGenerator
 
         $imageContents = (string) $this->image->encode('jpg', 100);
 
-        Storage::put($filePath, $imageContents);
+        Storage::disk($this->getStorageDisk())->put($filePath, $imageContents);
     }
 
     private function getFilename()
