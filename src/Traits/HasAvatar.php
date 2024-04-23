@@ -22,6 +22,11 @@ trait HasAvatar
 
             $avatarField = $model->getAvatarField();
 
+            // Check if the avatar field is blank or not set.
+            if (empty($model->{$avatarField}) && !isset($model->attributes[$avatarField])) {
+                return; // Exit from the function if the avatar field is blank or not set.
+            }
+
             if (isset($model->attributes[$avatarField]) && $model->attributes[$avatarField] instanceof UploadedFile) {
                 $model->{$avatarField} = $model->uploadAvatar(
                     $model->attributes[$avatarField],
