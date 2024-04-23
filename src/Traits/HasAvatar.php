@@ -23,7 +23,7 @@ trait HasAvatar
             $avatarField = $model->getAvatarField();
 
             // Check if the avatar field is blank or not set.
-            if (empty($model->{$avatarField}) && !isset($model->attributes[$avatarField])) {
+            if (empty($model->{$avatarField}) && ! isset($model->attributes[$avatarField])) {
                 return; // Exit from the function if the avatar field is blank or not set.
             }
 
