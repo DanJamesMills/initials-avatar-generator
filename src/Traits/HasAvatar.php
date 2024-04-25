@@ -14,31 +14,28 @@ trait HasAvatar
      */
     protected static function bootHasAvatar()
     {
+        // Handle the avatar generation when creating a new model
         static::creating(function ($model) {
             $model->generateAvatarAndSet();
         });
 
+        // Handle avatar updates when saving the model
         static::saving(function ($model) {
-
+            // Retrieve the name of the avatar field from the model
             $avatarField = $model->getAvatarField();
 
-            // Check if the avatar field is blank or not set.
-            if (empty($model->{$avatarField}) && ! isset($model->attributes[$avatarField])) {
-                return; // Exit from the function if the avatar field is blank or not set.
-            }
-
+            // Handle uploaded files: If the avatar field has a new UploadedFile, process it
             if (isset($model->attributes[$avatarField]) && $model->attributes[$avatarField] instanceof UploadedFile) {
                 $model->{$avatarField} = $model->uploadAvatar(
                     $model->attributes[$avatarField],
                     config('initials-avatar-generator.storage_path'),
                     'local'
                 );
-            } else {
-                $model->{$avatarField} = $model->getRawOriginal($avatarField);
             }
 
             if (! $model->isDirty($avatarField)) {
-                if ($model->checkIfAvatarIsNotCustomImage($model->{$avatarField}) && $model->checkIfNameInitialsChanged()) {
+                if ($model->checkIfAvatarIsNotCustomImage($model->{$avatarField}) &&
+                    $model->checkIfNameInitialsChanged()) {
                     $model->generateAvatarAndSet();
                 }
             }
@@ -82,7 +79,10 @@ trait HasAvatar
     {
         $generator = new InitialsAvatarGenerator();
 
-        $this->{$this->getAvatarField()} = $generator->name($this->getNameInitialsField())->generate();
+        $this->{$this->getAvatarField()} = $generator->name($this->getNameInitialsField())
+            ->filename($this->getFilenameToSaveAs())
+            ->fileFormat('png')
+            ->generate();
     }
 
     /**
@@ -101,9 +101,6 @@ trait HasAvatar
         return $this->getFilenameToSaveAs() !== $this->getFilenameWithoutExtension();
     }
 
-    /**
-     * Get the filename to save as.
-     */
     public function getFilenameToSaveAs(): string
     {
         return md5($this->id.$this->getNameInitialsField());
