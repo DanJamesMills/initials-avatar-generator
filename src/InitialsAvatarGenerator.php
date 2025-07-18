@@ -187,7 +187,9 @@ class InitialsAvatarGenerator
 
         $imageContents = (string) $this->image->encode('jpg', 100);
 
-        Storage::disk($this->getStorageDisk())->put($filePath, $imageContents);
+        Storage::disk($this->getStorageDisk())->put($filePath, $imageContents, [
+            'visibility' => 'public',
+        ]);
     }
 
     private function getFilename()
