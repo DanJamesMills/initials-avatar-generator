@@ -31,7 +31,7 @@ class InitialsAvatarGeneratorServiceProvider extends ServiceProvider
 
         // Register the main class to use with the facade
         $this->app->singleton('initials-avatar-generator', function () {
-            return new InitialsAvatarGenerator();
+            return new InitialsAvatarGenerator;
         });
     }
 }

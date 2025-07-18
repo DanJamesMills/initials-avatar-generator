@@ -19,7 +19,7 @@ class AvatarUploaderApiController extends BaseController
     public function store(Request $request)
     {
         try {
-            $avatarUploader = new AvatarUploader();
+            $avatarUploader = new AvatarUploader;
 
             $record = $this->getModelClass($request->model, $request->id);
 

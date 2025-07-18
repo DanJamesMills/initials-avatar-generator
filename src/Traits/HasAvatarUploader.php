@@ -13,7 +13,7 @@ trait HasAvatarUploader
      */
     public function uploadAvatar($file): string
     {
-        $uploader = new AvatarUploader();
+        $uploader = new AvatarUploader;
 
         return $uploader->handle($file);
     }

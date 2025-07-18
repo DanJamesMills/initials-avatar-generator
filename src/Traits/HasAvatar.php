@@ -80,7 +80,7 @@ trait HasAvatar
      */
     public function generateAvatarAndSet(): void
     {
-        $generator = new InitialsAvatarGenerator();
+        $generator = new InitialsAvatarGenerator;
 
         $this->{$this->getAvatarField()} = $generator->name($this->getNameInitialsField())
             ->filename($this->getFilenameToSaveAs())
