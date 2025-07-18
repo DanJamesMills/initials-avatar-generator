@@ -47,7 +47,10 @@ trait HasAvatar
      */
     private function uploadAvatar(UploadedFile $file, string $path, string $disk = 'public'): string
     {
-        $fileName = $file->store($path, $disk);
+        $fileName = $file->store($path, [
+            'disk' => $disk,
+            'visibility' => 'public',
+        ]);
 
         return pathinfo($fileName, PATHINFO_BASENAME);
     }
